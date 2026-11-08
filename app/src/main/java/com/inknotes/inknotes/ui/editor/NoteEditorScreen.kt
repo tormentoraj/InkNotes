@@ -20,9 +20,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.lifecycle.compose.collectAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.translate
 import androidx.compose.ui.graphics.scale
+import androidx.compose.foundation.layout.horizontalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
