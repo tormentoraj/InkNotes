@@ -1,0 +1,88 @@
+# Android Studio
+*.iml
+.gradle/
+build/
+local.properties
+
+# Kotlin
+*.kotlin_module
+
+# IntelliJ
+.idea/
+*.ipr
+*.iws
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Local environment files
+.env
+.env.local
+
+# Build outputs
+*.apk
+*.aar
+*.so
+*.jar
+
+# Test outputs
+*.log
+
+# Crashlytics
+crashlytics-build.properties
+
+# Google Services
+google-services.json
+
+# Firebase
+firebase.json
+
+# Keystores
+*.jks
+*.keystore
+
+# Signing configs
+signing-configs/
+
+# External native build
+.externalNativeBuild/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+
+# NDK
+android-ndk/
+
+# SDK
+android-sdk/
+
+# Emulator
+*.avd/
+*.ini
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Android Studio navigation history
+.navigator/
+
+# Android Studio workspace
+.workspace/
+
+# Android Studio caches
+.caches/
+
+# Android Studio templates
+.templates/
