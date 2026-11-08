@@ -20,6 +20,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.lifecycle.compose.collectAsState
+import androidx.compose.ui.graphics.translate
+import androidx.compose.ui.graphics.scale
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -31,7 +34,7 @@ import androidx.compose.material.icons.filled.Highlight
 import androidx.compose.material.icons.filled.LineWeight
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Palette
-import androidx.compose.material.icons.filled.Redraw
+import androidx.compose.material.icons.filled.Redo
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.TextFields
@@ -123,7 +126,7 @@ fun NoteEditorScreen(
                         Icon(Icons.Default.Undo, contentDescription = "Undo")
                     }
                     IconButton(onClick = { editorViewModel.redo() }) {
-                        Icon(Icons.Default.Redraw, contentDescription = "Redo")
+                        Icon(Icons.Default.Redo, contentDescription = "Redo")
                     }
                     IconButton(onClick = { showMoreMenu = true }) {
                         Icon(Icons.Default.MoreVert, contentDescription = "More")
@@ -369,7 +372,7 @@ fun DrawingCanvas(
                                 newOffset.x, newOffset.y
                             )
                         }
-                        if (change.pressedCount() > 1) {
+                        if (change.pressedCount > 1) {
                             onPan(-dragAmount.x, -dragAmount.y)
                         }
                     },
@@ -439,7 +442,7 @@ fun DrawingCanvas(
                     }
                 }
 
-                if (isDrawing && currentPath.isNotEmpty) {
+                if (isDrawing && currentPoints.isNotEmpty()) {
                     drawPath(
                         path = currentPath,
                         color = currentColor,

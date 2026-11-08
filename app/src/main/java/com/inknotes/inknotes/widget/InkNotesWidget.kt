@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
+import com.inknotes.inknotes.R
 import com.inknotes.inknotes.ui.MainActivity
 
 class InkNotesWidget : AppWidgetProvider() {
