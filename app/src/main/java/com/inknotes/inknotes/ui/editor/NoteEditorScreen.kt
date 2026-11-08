@@ -66,7 +66,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.Stroke as ComposeStroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -74,7 +74,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.inknotes.inknotes.data.model.Stroke
+import com.inknotes.inknotes.data.model.Stroke as DataStroke
 import com.inknotes.inknotes.ui.components.ColorPicker
 import com.inknotes.inknotes.ui.theme.HighlighterColors
 import com.inknotes.inknotes.ui.theme.PenColors
@@ -97,18 +97,18 @@ fun NoteEditorScreen(
     val zoomLevel by editorViewModel.zoomLevel.collectAsState()
     val offsetX by editorViewModel.offsetX.collectAsState()
     val offsetY by editorViewModel.offsetY.collectAsState()
-    
+
     var showColorPicker by remember { mutableStateOf(false) }
     var showWidthSlider by remember { mutableStateOf(false) }
     var showMoreMenu by remember { mutableStateOf(false) }
-    
+
     val snackbarHostState = remember { SnackbarHostState() }
-    
+
     LaunchedEffect(noteId) {
         if (noteId != 0L) {
         }
     }
-    
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -128,7 +128,7 @@ fun NoteEditorScreen(
                     IconButton(onClick = { showMoreMenu = true }) {
                         Icon(Icons.Default.MoreVert, contentDescription = "More")
                     }
-                    
+
                     DropdownMenu(
                         expanded = showMoreMenu,
                         onDismissRequest = { showMoreMenu = false }
@@ -151,27 +151,27 @@ fun NoteEditorScreen(
                     ) {
                         ToolButton(
                             icon = Icons.Default.Edit,
-                            isSelected = currentTool == Stroke.ToolType.PEN,
-                            onClick = { editorViewModel.setCurrentTool(Stroke.ToolType.PEN) }
+                            isSelected = currentTool == DataStroke.ToolType.PEN,
+                            onClick = { editorViewModel.setCurrentTool(DataStroke.ToolType.PEN) }
                         )
                         ToolButton(
                             icon = Icons.Default.Highlight,
-                            isSelected = currentTool == Stroke.ToolType.MARKER,
-                            onClick = { editorViewModel.setCurrentTool(Stroke.ToolType.MARKER) }
+                            isSelected = currentTool == DataStroke.ToolType.MARKER,
+                            onClick = { editorViewModel.setCurrentTool(DataStroke.ToolType.MARKER) }
                         )
                         ToolButton(
                             icon = Icons.Default.ContentCut,
-                            isSelected = currentTool == Stroke.ToolType.ERASER,
-                            onClick = { editorViewModel.setCurrentTool(Stroke.ToolType.ERASER) }
+                            isSelected = currentTool == DataStroke.ToolType.ERASER,
+                            onClick = { editorViewModel.setCurrentTool(DataStroke.ToolType.ERASER) }
                         )
                         ToolButton(
                             icon = Icons.Default.TextFields,
                             isSelected = false,
                             onClick = { }
                         )
-                        
+
                         Spacer(Modifier.width(8.dp))
-                        
+
                         IconButton(onClick = { showColorPicker = true }) {
                             Box(
                                 modifier = Modifier
@@ -179,18 +179,18 @@ fun NoteEditorScreen(
                                     .background(Color(strokeColor), RoundedCornerShape(8.dp))
                             )
                         }
-                        
+
                         IconButton(onClick = { showWidthSlider = true }) {
                             Icon(Icons.Default.LineWeight, contentDescription = "Width")
                         }
-                        
+
                         IconButton(onClick = { editorViewModel.setZoomLevel(zoomLevel * 1.2f) }) {
                             Icon(Icons.Default.ZoomIn, contentDescription = "Zoom In")
                         }
                         IconButton(onClick = { editorViewModel.setZoomLevel(zoomLevel / 1.2f) }) {
                             Icon(Icons.Default.ZoomOut, contentDescription = "Zoom Out")
                         }
-                        
+
                         IconButton(onClick = { editorViewModel.addNewPage() }) {
                             Icon(Icons.Default.Add, contentDescription = "New Page")
                         }
@@ -222,7 +222,7 @@ fun NoteEditorScreen(
                 },
                 modifier = Modifier.fillMaxSize()
             )
-            
+
             if (showColorPicker) {
                 ModalBottomSheet(
                     onDismissRequest = { showColorPicker = false }
@@ -234,13 +234,13 @@ fun NoteEditorScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Text("Select Color", style = MaterialTheme.typography.titleMedium)
-                        
-                        val colors = if (currentTool == Stroke.ToolType.MARKER) {
+
+                        val colors = if (currentTool == DataStroke.ToolType.MARKER) {
                             HighlighterColors
                         } else {
                             PenColors
                         }
-                        
+
                         ColorPicker(
                             colors = colors,
                             selectedColor = Color(strokeColor),
@@ -252,7 +252,7 @@ fun NoteEditorScreen(
                     }
                 }
             }
-            
+
             if (showWidthSlider) {
                 ModalBottomSheet(
                     onDismissRequest = { showWidthSlider = false }
@@ -317,8 +317,8 @@ fun ToolButton(
 
 @Composable
 fun DrawingCanvas(
-    strokes: List<Stroke>,
-    currentTool: Stroke.ToolType,
+    strokes: List<DataStroke>,
+    currentTool: DataStroke.ToolType,
     currentColor: Color,
     currentWidth: Float,
     zoomLevel: Float,
@@ -333,9 +333,9 @@ fun DrawingCanvas(
     var currentPressures by remember { mutableStateOf(listOf<Float>()) }
     var currentTimestamps by remember { mutableStateOf(listOf<Long>()) }
     var isDrawing by remember { mutableStateOf(false) }
-    
+
     val density = LocalDensity.current
-    
+
     Canvas(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
@@ -343,7 +343,7 @@ fun DrawingCanvas(
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDragStart = { offset ->
-                        if (currentTool != Stroke.ToolType.ERASER) {
+                        if (currentTool != DataStroke.ToolType.ERASER) {
                             currentPath = Path()
                             currentPoints = listOf(offset)
                             currentPressures = listOf(1f)
@@ -358,7 +358,7 @@ fun DrawingCanvas(
                             currentPoints = currentPoints + newOffset
                             currentPressures = currentPressures + 1f
                             currentTimestamps = currentTimestamps + System.currentTimeMillis()
-                            
+
                             val lastPoint = currentPoints[currentPoints.size - 2]
                             val controlPoint = Offset(
                                 (lastPoint.x + newOffset.x) / 2,
@@ -396,7 +396,7 @@ fun DrawingCanvas(
                     val points = stroke.points.chunked(2).mapIndexed { index, pair ->
                         Offset(pair[0], pair[1])
                     }
-                    
+
                     if (points.size > 1) {
                         val path = Path().apply {
                             moveTo(points[0].x, points[0].y)
@@ -411,26 +411,26 @@ fun DrawingCanvas(
                                 )
                             }
                         }
-                        
+
                         val strokeStyle = when (stroke.toolType) {
-                            Stroke.ToolType.PEN -> Stroke(
+                            DataStroke.ToolType.PEN -> ComposeStroke(
                                 width = stroke.width * density.density,
                                 cap = StrokeCap.Round
                             )
-                            Stroke.ToolType.MARKER -> Stroke(
+                            DataStroke.ToolType.MARKER -> ComposeStroke(
                                 width = stroke.width * density.density,
                                 cap = StrokeCap.Round
                             )
-                            Stroke.ToolType.ERASER -> Stroke(
+                            DataStroke.ToolType.ERASER -> ComposeStroke(
                                 width = stroke.width * density.density,
                                 cap = StrokeCap.Round
                             )
-                            Stroke.ToolType.HIGHLIGHTER -> Stroke(
+                            DataStroke.ToolType.HIGHLIGHTER -> ComposeStroke(
                                 width = stroke.width * density.density,
                                 cap = StrokeCap.Round
                             )
                         }
-                        
+
                         drawPath(
                             path = path,
                             color = Color(stroke.color),
@@ -438,12 +438,12 @@ fun DrawingCanvas(
                         )
                     }
                 }
-                
+
                 if (isDrawing && currentPath.isNotEmpty) {
                     drawPath(
                         path = currentPath,
                         color = currentColor,
-                        style = Stroke(
+                        style = ComposeStroke(
                             width = currentWidth * density.density,
                             cap = StrokeCap.Round
                         )

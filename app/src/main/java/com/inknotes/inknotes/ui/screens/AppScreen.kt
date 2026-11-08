@@ -9,6 +9,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,7 +41,7 @@ fun AppScreen(windowSizeClass: WindowSizeClass) {
     val settingsViewModel: SettingsViewModel = hiltViewModel()
     val noteViewModel: NoteViewModel = hiltViewModel()
     
-    val isCompact = windowSizeClass.widthSizeClass == androidx.window.layout.WindowWidthSizeClass.Compact
+    val isCompact = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
     
     if (isCompact) {
         AnimatedContent(
