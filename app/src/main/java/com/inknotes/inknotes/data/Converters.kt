@@ -66,4 +66,20 @@ class Converters {
     fun floatListToString(list: List<Float>?): String? {
         return list?.let { json.encodeToString(it) }
     }
+
+    @TypeConverter
+    fun fromLongList(value: String?): List<Long>? {
+        return value?.let {
+            try {
+                json.decodeFromString<List<Long>>(it)
+            } catch (e: Exception) {
+                emptyList()
+            }
+        }
+    }
+
+    @TypeConverter
+    fun longListToString(list: List<Long>?): String? {
+        return list?.let { json.encodeToString(it) }
+    }
 }
