@@ -72,6 +72,11 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
 
+    // KSP workaround for annotation processing issue
+    ksp {
+        arg("room.incremental", "false")
+    }
+
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation("androidx.window:window:1.1.0")
