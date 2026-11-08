@@ -51,7 +51,7 @@ android {
 
     testOptions {
         unitTests.all {
-            useJUnitPlatform()
+            // useJUnitPlatform() - disabled for JUnit 4
         }
     }
 }
